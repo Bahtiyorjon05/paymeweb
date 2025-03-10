@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Report Issue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 0, 122, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px #ff007a, 0 0 50px #00eaff;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4em;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 30px; 
+        }
+      
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            box-shadow: 0 0 20px #ff007a, 0 0 30px #00eaff;
+            transform: scale(1.02);
+            outline: none;
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #ff007a, 0 0 45px #00eaff;
+        }
+        a.back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff;
+        }
+        .success { color: #00eaff; }
+        .error { color: #ff4444; }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 3rem; }
+            h1 .emoji { font-size: 2.5rem; }
+            .form-group label { font-size: 1rem; }
+            .form-group input, .form-group textarea { font-size: 0.9rem; padding: 10px; }
+            button { font-size: 1.5rem; padding: 10px 20px; }
+            a.back-btn { font-size: 1.2rem; padding: 8px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Report an Issue</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Your Name <span style="color: #ff4444;">(Required)</span></label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email <span style="color: #ff4444;">(Required)</span></label>
+                <input type="email" id="email" name="email" placeholder="Your email" required>
+            </div>
+            <div class="form-group">
+                <label for="issue">Your Issue <span style="color: #ff4444;">(Required)</span></label>
+                <textarea id="issue" name="issue" placeholder="What’s wrong, bro?" required></textarea>
+            </div>
+            <button type="submit">Submit 🚀</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <a href="{% url 'home' %}" class="back-btn">Back to Home 🏠</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - View Cards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto; /* Smooth scrolling, no tremble */
+        }
+        .container {
+            max-width: 800px; /* Wider for creative card layout */
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05); /* Glass effect, senior-level */
+            border-radius: 30px; /* Larger rounding */
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2); /* Softer shadow, no tremble */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease; /* Smooth scaling */
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 5rem; /* Clean, senior-level title */
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a;
+            margin-bottom: 30px; /* More space below title */
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive, creative */
+            gap: 25px; /* Clean spacing */
+            padding: 20px 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.08); /* Subtle glass, creative */
+            border-radius: 20px; /* Rounded, creative */
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.1); /* Minimal shadow, no tremble */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.3); /* Softer shadow, no tremble */
+        }
+        .card-field {
+            margin-bottom: 15px; /* Clean spacing */
+            text-align: left;
+            font-size: 1.2rem; /* Readable text */
+            color: #fff;
+        }
+        .card-field strong {
+            color: #00eaff; /* Neon highlight, creative */
+            font-weight: 600; /* Bold for clarity */
+        }
+        a.back-btn {
+            padding: 12px 25px; /* Clean, standard button size */
+            font-size: 1.2rem; /* Readable text */
+            background: linear-gradient(45deg, #ff007a, #00eaff); /* Neon gradient */
+            border: none;
+            border-radius: 20px; /* Rounded, creative */
+            color: #fff;
+            cursor: pointer;
+            margin: 20px 0; /* Clean spacing */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+            text-decoration: none;
+            display: inline-block;
+            min-width: 200px; /* Clean width */
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.3); /* Subtle shadow, no tremble */
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.5); /* Softer shadow, no tremble */
+        }
+        .success { color: #00eaff; }
+        .error { color: #ff4444; }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 4rem; }
+            .cards-grid { grid-template-columns: 1fr; /* Single column on mobile */ }
+            .card { padding: 15px; }
+            .card-field { font-size: 1rem; }
+            a.back-btn { font-size: 1rem; padding: 10px 20px; margin: 15px 0; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Cards</h1> <!-- No emoji, clean H1 due to font issues -->
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if cards %}
+            <div class="cards-grid">
+                {% for card in cards %}
+                    <div class="card">
+                        <div class="card-field"><strong>Card Number:</strong> {{ card.card_number }}</div>
+                        <div class="card-field"><strong>Balance:</strong> {{ card.balance }}</div>
+                        <div class="card-field"><strong>Currency:</strong> {{ card.currency }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No cards added yet.</p>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="back-btn">Back to Dashboard 🏠</a>
+    </div>
+</body>
+</html>

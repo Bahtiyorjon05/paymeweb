@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Generate Report 📊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall 8s linear infinite;
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .container {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(111, 14, 167, 0.3), 0 0 15px rgba(0, 234, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #1aa57b, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(17, 167, 92, 0.6), 0 0 20px rgba(0, 234, 255, 0.4);
+            margin-bottom: 20px;
+            text-align: center;
+            animation: neonPulse 3s infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #1aa57b; }
+            50% { text-shadow: 0 0 15px #00eaff; }
+            100% { text-shadow: 0 0 10px #1aa57b; }
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .tab {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px 15px 0 0;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin: 0 5px;
+        }
+        .tab:hover, .tab.active {
+            background: linear-gradient(45deg, #1aa57b, #00eaff);
+            transform: scale(1.05);
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 0 15px 15px 15px;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.2);
+        }
+        .tab-content.active { display: block; }
+        .select-wrapper {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 1.1rem;
+            background: #0a0a23;
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2), 0 0 15px rgba(17, 167, 92, 0.7);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        select:hover, select:focus {
+            transform: scale(1.05);
+            box-shadow: inset 0 0 18px #00eaff, 0 0 30px #268d0c;
+            outline: none;
+        }
+        .report-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .report-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.4);
+        }
+        .report-label {
+            font-weight: 600;
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+            margin-right: 10px;
+        }
+        .report-value {
+            color: #fff;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        .download-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .download-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a;
+        }
+        .back-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(17, 167, 92, 0.7);
+            font-family: 'Righteous', sans-serif;
+            margin-top: 30px;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #268d0c;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 20px; }
+            h1 { font-size: 2rem; }
+            .tabs { flex-direction: column; }
+            .tab { font-size: 1rem; padding: 10px 20px; margin: 5px 0; }
+            .select-wrapper select { font-size: 1rem; width: 100%; }
+            .report-item { padding: 10px; font-size: 0.9rem; }
+            .download-btn, .back-btn { font-size: 1rem; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Generate Report 📊</h1>
+        <a href="{% url 'download_report_pdf' %}?day={{ report.selected.day }}&week={{ report.selected.week }}&month={{ report.selected.month }}&year={{ report.selected.year }}" class="download-btn">Download Report PDF 📥</a>
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('daily')">Daily</div>
+            <div class="tab" onclick="showTab('weekly')">Weekly</div>
+            <div class="tab" onclick="showTab('monthly')">Monthly</div>
+            <div class="tab" onclick="showTab('annual')">Annual</div>
+        </div>
+        <!-- Daily -->
+        <div id="daily" class="tab-content active">
+            <div class="select-wrapper">
+                <select onchange="window.location.href='?day=' + this.value + '&week={{ report.selected.week }}&month={{ report.selected.month }}&year={{ report.selected.year }}'">
+                    {% for day in report.days %}
+                        <option value="{{ day }}" {% if day == report.selected.day %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="report-item"><span class="report-label">Total:</span><span class="report-value">{{ report.daily.total }} ({{ report.daily.count }} tx)</span></div>
+            <div class="report-item"><span class="report-label">Most Sent:</span><span class="report-value">{{ report.daily.most_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Least Sent:</span><span class="report-value">{{ report.daily.least_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Peak Hour:</span><span class="report-value">{{ report.daily.peak_hour }}</span></div>
+            <div class="report-item"><span class="report-label">Status Split:</span><span class="report-value">{{ report.daily.status_split }}</span></div>
+            <div class="report-item"><span class="report-label">Largest Transaction:</span><span class="report-value">{{ report.daily.largest_tx }}</span></div>
+        </div>
+        <!-- Weekly -->
+        <div id="weekly" class="tab-content">
+            <div class="select-wrapper">
+                <select onchange="window.location.href='?day={{ report.selected.day }}&week=' + this.value + '&month={{ report.selected.month }}&year={{ report.selected.year }}'">
+                    {% for week in report.weeks %}
+                        <option value="{{ week }}" {% if week == report.selected.week %}selected{% endif %}>{{ week }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="report-item"><span class="report-label">Total:</span><span class="report-value">{{ report.weekly.total }} ({{ report.weekly.count }} tx)</span></div>
+            <div class="report-item"><span class="report-label">Most Sent:</span><span class="report-value">{{ report.weekly.most_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Least Sent:</span><span class="report-value">{{ report.weekly.least_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Peak Hour:</span><span class="report-value">{{ report.weekly.peak_hour }}</span></div>
+            <div class="report-item"><span class="report-label">Status Split:</span><span class="report-value">{{ report.weekly.status_split }}</span></div>
+            <div class="report-item"><span class="report-label">Largest Transaction:</span><span class="report-value">{{ report.weekly.largest_tx }}</span></div>
+            <div class="report-item"><span class="report-label">Busiest Day:</span><span class="report-value">{{ report.weekly.busiest_day }}</span></div>
+        </div>
+        <!-- Monthly -->
+        <div id="monthly" class="tab-content">
+            <div class="select-wrapper">
+                <select onchange="window.location.href='?day={{ report.selected.day }}&week={{ report.selected.week }}&month=' + this.value + '&year={{ report.selected.year }}'">
+                    {% for month in report.months %}
+                        <option value="{{ month }}" {% if month == report.selected.month %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="report-item"><span class="report-label">Total:</span><span class="report-value">{{ report.monthly.total }} ({{ report.monthly.count }} tx)</span></div>
+            <div class="report-item"><span class="report-label">Most Sent:</span><span class="report-value">{{ report.monthly.most_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Least Sent:</span><span class="report-value">{{ report.monthly.least_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Peak Hour:</span><span class="report-value">{{ report.monthly.peak_hour }}</span></div>
+            <div class="report-item"><span class="report-label">Status Split:</span><span class="report-value">{{ report.monthly.status_split }}</span></div>
+            <div class="report-item"><span class="report-label">Largest Transaction:</span><span class="report-value">{{ report.monthly.largest_tx }}</span></div>
+            <div class="report-item"><span class="report-label">Top Currency:</span><span class="report-value">{{ report.monthly.top_currency }}</span></div>
+        </div>
+        <!-- Annual -->
+        <div id="annual" class="tab-content">
+            <div class="select-wrapper">
+                <select onchange="window.location.href='?day={{ report.selected.day }}&week={{ report.selected.week }}&month={{ report.selected.month }}&year=' + this.value">
+                    {% for year in report.years %}
+                        <option value="{{ year }}" {% if year == report.selected.year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="report-item"><span class="report-label">Total:</span><span class="report-value">{{ report.annual.total }} ({{ report.annual.count }} tx)</span></div>
+            <div class="report-item"><span class="report-label">Most Sent:</span><span class="report-value">{{ report.annual.most_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Least Sent:</span><span class="report-value">{{ report.annual.least_sender }}</span></div>
+            <div class="report-item"><span class="report-label">Peak Hour:</span><span class="report-value">{{ report.annual.peak_hour }}</span></div>
+            <div class="report-item"><span class="report-label">Status Split:</span><span class="report-value">{{ report.annual.status_split }}</span></div>
+            <div class="report-item"><span class="report-label">Largest Transaction:</span><span class="report-value">{{ report.annual.largest_tx }}</span></div>
+            <div class="report-item"><span class="report-label">Growth:</span><span class="report-value">{{ report.annual.growth }}</span></div>
+        </div>
+        <a href="{% url 'admin_manage_transactions' %}" class="back-btn">
+            <span class="emoji">🔙</span>Back to Manage Transactions
+        </a>
+    </div>
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = '$';
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+    </script>
+</body>
+</html>

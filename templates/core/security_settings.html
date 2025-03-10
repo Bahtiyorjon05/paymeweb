@@ -1,0 +1,154 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Security Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a33);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            padding: 60px 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 35px;
+            box-shadow: 0 12px 30px rgba(255, 0, 122, 0.15), 0 0 40px rgba(0, 234, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.25), 0 0 50px rgba(0, 234, 255, 0.2);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff; }
+            50% { text-shadow: 0 0 35px #ff007a, 0 0 25px #00eaff; }
+        }
+        .options {
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.1), 0 0 20px rgba(0, 234, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .options:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.2), 0 0 30px rgba(0, 234, 255, 0.1);
+        }
+        p.two-factor-status {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        p.two-factor-status .enabled { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        p.two-factor-status .disabled { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        form {
+            display: inline-block;
+            margin: 10px;
+        }
+        button {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        a.back-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .success { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        .error { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 4rem; }
+            .options { padding: 20px; border-radius: 20px; }
+            p.two-factor-status { font-size: 1.2rem; margin-bottom: 15px; }
+            button, a.back-btn { font-size: 1.1rem; padding: 12px 25px; margin: 10px 0; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Security Settings</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <p class="two-factor-status">Two-Factor: {% if two_factor_enabled %}<span class="enabled">Enabled ✅</span>{% else %}<span class="disabled">Disabled 🚫</span>{% endif %}</p>
+        <div class="options">
+            <form method="post" action="{% url 'enable_two_factor' %}">
+                {% csrf_token %}
+                <button type="submit">Enable 2FA <span class="emoji">🔐</span></button>
+            </form>
+            <form method="post" action="{% url 'disable_two_factor' %}">
+                {% csrf_token %}
+                <button type="submit">Disable 2FA <span class="emoji">🔓</span></button>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-btn"><span class="emoji">🏠</span> Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

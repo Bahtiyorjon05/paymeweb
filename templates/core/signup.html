@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at center, #1a1a33 0%, #0a0a23 80%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px;
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(10, 10, 35, 0.95), rgba(26, 26, 51, 0.85));
+            border-radius: 40px;
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.25), inset 0 0 10px rgba(255, 0, 122, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(6px);
+        }
+        .container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 45px rgba(255, 0, 122, 0.35);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3.8rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff, #ff007a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 40px;
+            text-shadow: 0 3px 12px rgba(255, 0, 122, 0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: glow 1.5s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 3px 12px rgba(255, 0, 122, 0.5); }
+            50% { text-shadow: 0 5px 20px rgba(255, 0, 122, 0.7); }
+        }
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+        .form-group label::after {
+            content: '*';
+            color: #ff007a;
+            margin-left: 5px;
+            font-size: 1.2rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #1f1f3a, #2a2a50);
+            color: #fff;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 4px 15px rgba(255, 0, 122, 0.2);
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            background: linear-gradient(145deg, #2a2a50, #1f1f3a);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(255, 0, 122, 0.3);
+            transform: translateY(-2px);
+            outline: none;
+        }
+        .form-group input[type="password"] {
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 3px;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            color: #fff;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5), 0 4px 15px rgba(255, 0, 122, 0.2);
+            transition: all 0.3s ease;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%23FF007A" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 20px center;
+            background-size: 18px;
+            padding-right: 45px;
+            cursor: pointer;
+        }
+        .form-group select:focus {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(255, 0, 122, 0.3);
+            transform: translateY(-2px);
+            outline: none;
+        }
+        .form-group select option {
+            background: #0a0a23;
+            color: #fff;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+        .form-group .errorlist {
+            color: #ff4444;
+            font-size: 1rem;
+            margin-top: 6px;
+            list-style: none;
+            padding-left: 10px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        button {
+            padding: 16px 40px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 35px 0 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 25px rgba(255, 0, 122, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            transform: scale(1.05) translateY(-4px);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.7);
+            background: linear-gradient(45deg, #00eaff, #ff007a);
+        }
+        a.back-btn, a.login-btn {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.3);
+        }
+        a.back-btn:hover, a.login-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.5);
+            background: linear-gradient(45deg, #00eaff, #ff007a);
+        }
+        .success {
+            color: #00eaff;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 5px rgba(0, 234, 255, 0.6);
+        }
+        .error {
+            color: #ff4444;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 5px rgba(255, 0, 0, 0.6);
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 90%; padding: 35px; margin: 15px; }
+            h1 { font-size: 2.8rem; }
+            .form-group label { font-size: 1.1rem; }
+            .form-group input, .form-group select { font-size: 1rem; padding: 14px 18px; }
+            .form-group select { background-size: 16px; padding-right: 40px; }
+            .form-group .errorlist { font-size: 0.9rem; }
+            button { font-size: 1.2rem; padding: 14px 35px; }
+            a.back-btn, a.login-btn { font-size: 1rem; padding: 10px 25px; margin: 8px 10px; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 25px; }
+            h1 { font-size: 2.2rem; }
+            .form-group label { font-size: 1rem; }
+            .form-group input, .form-group select { font-size: 0.9rem; padding: 12px 16px; }
+            button { font-size: 1.1rem; padding: 12px 30px; }
+            a.back-btn, a.login-btn { font-size: 0.9rem; padding: 8px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.age.id_for_label }}">Age</label>
+                {{ form.age }}
+                {{ form.age.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.gender.id_for_label }}">Gender</label>
+                <select name="{{ form.gender.name }}" id="{{ form.gender.id_for_label }}">
+                    <option value="">-- Select --</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                {{ form.gender.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                {{ form.phone_number }}
+                {{ form.phone_number.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+                {{ form.confirm_password }}
+                {{ form.confirm_password.errors }}
+            </div>
+            <button type="submit">Sign Up 🚀</button>
+        </form>
+        <a href="{% url 'home' %}" class="back-btn">Back to Home 🏠</a>
+        <a href="{% url 'login' %}" class="login-btn">Login 🔑</a>
+    </div>
+</body>
+</html>

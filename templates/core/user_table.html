@@ -1,0 +1,58 @@
+
+
+
+
+
+<table class="users-table">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Phone</th>
+        <th>Joined Time</th>
+        <th>2FA</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.age }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.password }}</td>
+            <td>{{ user.phone_number }}</td>
+            <td>{{ user.joined_time }}</td>
+            <td class="two-fa">{{ user.two_factor_enabled }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<style>
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+    .users-table th, .users-table td {
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: left;
+        transition: background 0.3s ease;
+    }
+    .users-table th {
+        background: linear-gradient(45deg, #ff007a, #00eaff);
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
+    }
+    .users-table td {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .users-table td:hover {
+        background: rgba(0, 234, 255, 0.2);
+    }
+    .blocked { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+    .two-fa { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.5); }
+</style>

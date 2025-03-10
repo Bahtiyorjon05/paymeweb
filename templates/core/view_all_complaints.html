@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - View All Complaints 📩</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall 8s linear infinite;
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(111, 14, 167, 0.3), 0 0 15px rgba(0, 234, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #1aa57b, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(17, 167, 92, 0.6), 0 0 20px rgba(0, 234, 255, 0.4);
+            margin-bottom: 20px;
+            animation: neonPulse 3s infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #1aa57b; }
+            50% { text-shadow: 0 0 15px #00eaff; }
+            100% { text-shadow: 0 0 10px #1aa57b; }
+        }
+        .download-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .download-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        .table th {
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(17, 167, 92, 0.6);
+            font-weight: bold;
+        }
+        .table td {
+            background: rgba(255, 255, 255, 0.06);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .table tr:hover td {
+            background: rgba(0, 234, 255, 0.2);
+        }
+        .cards {
+            display: none;
+            margin-top: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.4);
+        }
+        .card-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            gap: 10px;
+        }
+        .card-label {
+            font-weight: 600;
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+        }
+        .card-value {
+            color: #fff;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            word-wrap: break-word;
+            max-width: 90%;
+        }
+        .respond-btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .respond-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ff007a;
+        }
+        .back-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(17, 167, 92, 0.7);
+            font-family: 'Righteous', sans-serif;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #268d0c;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 20px; margin: 20px auto; }
+            h1 { font-size: 2rem; }
+            .download-btn { font-size: 1rem; padding: 10px 20px; }
+            .table { display: none; }
+            .cards { display: block; }
+            .card-item { flex-direction: column; font-size: 0.9rem; }
+            .respond-btn { font-size: 0.8rem; padding: 6px 12px; }
+            .back-btn { font-size: 1rem; padding: 10px 20px; }
+            .emoji { font-size: 1.2rem; }
+        }
+        @media (min-width: 601px) {
+            .cards { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>View All Complaints 📩</h1>
+        <a href="?download_pdf=1" class="download-btn">Download All as PDF 📥</a>
+        <!-- Table for Desktop -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Submitted Time</th>
+                    <th>Status</th>
+                    <th>Respond</th>
+                    <th>Answered Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.id }}</td>
+                        <td>{{ complaint.name }}</td>
+                        <td>{{ complaint.email }}</td>
+                        <td>{{ complaint.message }}</td>
+                        <td>{{ complaint.submitted_time }}</td>
+                        <td>{{ complaint.status }}</td>
+                        <td><a href="{% url 'respond_complaint' complaint.id %}" class="respond-btn">Respond</a></td>
+                        <td>{{ complaint.answered_time }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No complaints yet, bro! 😊</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Cards for Mobile -->
+        <div class="cards">
+            {% for complaint in complaints %}
+                <div class="card">
+                    <div class="card-item">
+                        <span class="card-label">ID:</span>
+                        <span class="card-value">{{ complaint.id }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Name:</span>
+                        <span class="card-value">{{ complaint.name }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Email:</span>
+                        <span class="card-value">{{ complaint.email }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Message:</span>
+                        <span class="card-value">{{ complaint.message }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Submitted Time:</span>
+                        <span class="card-value">{{ complaint.submitted_time }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Status:</span>
+                        <span class="card-value">{{ complaint.status }}</span>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Respond:</span>
+                        <a href="{% url 'respond_complaint' complaint.id %}" class="respond-btn">Respond</a>
+                    </div>
+                    <div class="card-item">
+                        <span class="card-label">Answered Time:</span>
+                        <span class="card-value">{{ complaint.answered_time }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="card">
+                    <div class="card-item">No complaints yet, bro! 😊</div>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'view_complaints' %}" class="back-btn">
+            <span class="emoji">🔙</span>Back to Menu
+        </a>
+    </div>
+    <script>
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = '$';
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+    </script>
+</body>
+</html>

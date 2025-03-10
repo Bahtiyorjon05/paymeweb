@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Manage Users 👤</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 0 L100 100 M0 100 L100 0" stroke="%2300eaff" stroke-width="0.5"/></svg>');
+            z-index: -1;
+            opacity: 0.8;
+            animation: matrixFlow 10s linear infinite;
+        }
+        @keyframes matrixFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 30px rgba(255, 0, 122, 0.5), 0 0 20px rgba(0, 234, 255, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 122, 0.1), transparent);
+            animation: neonPulse 5s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes neonPulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 0, 122, 0.8), 0 0 30px rgba(0, 234, 255, 0.5);
+            margin-bottom: 20px;
+            animation: flicker 2s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            50% { opacity: 1; text-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff; }
+            100% { opacity: 0.9; }
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+        }
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .users-table th, .users-table td {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+            transition: background 0.3s ease;
+        }
+        .users-table th {
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
+        }
+        .users-table td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .users-table td:hover {
+            background: rgba(0, 234, 255, 0.2);
+        }
+        .blocked { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+        .two-fa { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.5); }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .option-btn {
+            padding: 15px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 122, 0.7), 0 0 25px rgba(0, 234, 255, 0.5);
+            font-family: 'Righteous', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .option-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .option-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #ff007a, 0 0 40px #00eaff;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+        }
+        .option-btn:hover::after {
+            opacity: 0.3;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .error { color: #ff4444; text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+        .success { color: #00eaff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.5); }
+        #content {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to get CSRF token
+        function getCSRFToken() {
+            return $('meta[name="csrf-token"]').attr('content') || $('input[name="csrfmiddlewaretoken"]').val();
+        }
+
+        $(document).ready(function() {
+            $('.option-btn').click(function(e) {
+                e.preventDefault();
+                var action = $(this).data('action');
+                if (action) {
+                    $.ajax({
+                        url: '{% url "admin_users" %}',
+                        type: 'POST',
+                        data: { action: action },
+                        headers: {
+                            'X-CSRFToken': getCSRFToken()  // Add CSRF token to headers
+                        },
+                        beforeSend: function(xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", getCSRFToken());
+                            }
+                        },
+                        success: function(response) {
+                            if (response.redirect) {
+                                window.location.href = response.redirect;
+                            } else {
+                                $('#content').html(response.content);
+                                alert(response.message); // Show neon message as alert
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error: ' + error + ' 😬');
+                        }
+                    });
+                } else if ($(this).attr('href')) {
+                    window.location.href = $(this).attr('href');
+                }
+            });
+
+            // Helper function to check if method is CSRF-safe
+            function csrfSafeMethod(method) {
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+        });
+    </script>
+    <!-- Add CSRF token meta tag in the head -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+<body>
+    <div class="bg-matrix"></div>
+    <div class="container">
+        <h1>Payme Manage Users 👤</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <p>{{ message }}</p>
+        <div class="options-grid">
+            <button class="option-btn" data-action="view_all_users">
+                <span class="emoji">👀</span>View All Users
+            </button>
+            <button class="option-btn" data-action="sort_users">
+                <span class="emoji">🔄</span>Sort Users
+            </button>
+            <button class="option-btn" data-action="search_user">
+                <span class="emoji">🔍</span>Search User
+            </button>
+            <button class="option-btn" data-action="remove_user">
+                <span class="emoji">🗑️</span>Remove User
+            </button>
+            <button class="option-btn" data-action="view_blocked_users">
+                <span class="emoji">🔴</span>View Blocked Users
+            </button>
+            <button class="option-btn" data-action="unblock_user">
+                <span class="emoji">🔓</span>Unblock User
+            </button>
+            <button class="option-btn" data-action="block_user">
+                <span class="emoji">🔒</span>Block User
+            </button>
+            <button class="option-btn" data-action="change_auto_logout">
+                <span class="emoji">⏰</span>Change Auto Logout Time
+            </button>
+            <a href="{% url 'admin_dashboard' %}" class="option-btn">
+                <span class="emoji">🔙</span>Back to Admin Menu
+            </a>
+        </div>
+        <div id="content"></div> <!-- Area for AJAX content -->
+    </div>
+</body>
+</html>

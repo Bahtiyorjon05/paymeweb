@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Verify Two-Factor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a33);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            padding: 60px 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 35px;
+            box-shadow: 0 12px 30px rgba(255, 0, 122, 0.15), 0 0 40px rgba(0, 234, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.25), 0 0 50px rgba(0, 234, 255, 0.2);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff; }
+            50% { text-shadow: 0 0 35px #ff007a, 0 0 25px #00eaff; }
+        }
+        .form-box {
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.1), 0 0 20px rgba(0, 234, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.2), 0 0 30px rgba(0, 234, 255, 0.1);
+        }
+        p.step-text {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        form {
+            display: inline-block;
+            margin: 10px;
+        }
+        input {
+            width: 500px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        input:focus {
+            box-shadow: inset 0 0 18px #00eaff, 0 4px 15px rgba(255, 0, 122, 0.3);
+            transform: scale(1.03);
+            outline: none;
+        }
+        button {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        a.back-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .success { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        .error { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 2.5rem; }
+            .form-box { padding: 20px; border-radius: 20px; }
+            p.step-text { font-size: 1.2rem; margin-bottom: 15px; }
+            input { font-size: 0.9rem; padding: 12px; max-width: 300px;}
+            button, a.back-btn { font-size: 1.1rem; padding: 12px 25px; margin: 10px 0; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verify Two-Factor</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <p class="step-text">Enter your 2FA password:</p>
+        <div class="form-box">
+            <form method="post">
+                {% csrf_token %}
+                <input type="password" name="code" placeholder="2FA Password" required><br>
+                <button type="submit">Verify ✅</button>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-btn">Back to Dashboard 🏠</a>
+        </div>
+    </div>
+</body>
+</html>

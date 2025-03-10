@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto; /* Smooth scrolling, no tremble */
+        }
+        .container {
+            max-width: 900px; /* Wider for creative layout */
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05); /* Glass effect, senior-level */
+            border-radius: 30px; /* Larger rounding */
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2); /* Softer shadow, no tremble */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease; /* Smooth scaling */
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 7em;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 30px; 
+        }
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; /* Creative spacing */
+            padding: 20px 0;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.08); /* Subtle glass, creative */
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.1); /* Minimal shadow, no tremble */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+        }
+        .section:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.3); /* Softer shadow, no tremble */
+        }
+        .welcome {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .requests h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .request-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05); /* Glass effect, creative */
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(255, 0, 122, 0.1); /* Minimal shadow, no tremble */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+        }
+        .request-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.2); /* Softer shadow, no tremble */
+        }
+        .request-text {
+            font-size: 1.2rem;
+            flex-grow: 1;
+        }
+        .request-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .pay-btn, .cancel-btn {
+            padding: 10px 15px; /* Smaller, clean buttons */
+            font-size: 1rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 15px; /* Rounded, creative */
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(255, 0, 122, 0.2); /* Subtle shadow, no tremble */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+        }
+        .pay-btn:hover, .cancel-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 0, 122, 0.4); /* Softer shadow, no tremble */
+        }
+        .menu-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; /* Creative spacing */
+            margin-top: 30px;
+        }
+        .menu-option {
+            background: rgba(255, 255, 255, 0.08); /* Subtle glass, creative */
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(255, 0, 122, 0.1); /* Minimal shadow, no tremble */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+        }
+        .menu-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.3); /* Softer shadow, no tremble */
+        }
+        .menu-option a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s ease; /* Smooth, no tremble */
+        }
+        .menu-option a:hover {
+            color: #00eaff;
+        }
+        .menu-option .emoji {
+            font-size: 1.5rem;
+        }
+        .logout-form {
+            margin-top: 30px;
+        }
+        button.logout-btn {
+            padding: 20px 40px;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button.logout-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .success { color: #00eaff; }
+        .error { color: #ff4444; }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size:4rem; }
+            .welcome { font-size: 1.3rem; }
+            .requests h2 { font-size: 1.5rem; }
+            .request-text { font-size: 1rem; }
+            .pay-btn, .cancel-btn{ font-size: 0.9rem; padding: 8px 12px; }
+            button.logout-btn {font-size: 1.5rem; padding: 8px 12px;}
+            .menu-option a { font-size: 1rem; }
+            .menu-option .emoji { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <p class="welcome">Welcome, {{ user.first_name }} {{ user.last_name }}!</p>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <div class="dashboard-content">
+            <div class="section requests">
+                <h2>Pending Requests</h2>
+                {% if pending_requests %}
+                    {% for request in pending_requests %}
+                        <div class="request-item">
+                            <span class="request-text">{{ request.sender.first_name }} {{ request.sender.last_name }} requested {{ request.amount }} {{ request.currency }} from you.</span>
+                            <div class="request-actions">
+                                <a href="{% url 'pay_request' request.id %}" class="pay-btn">Pay</a>
+                                <a href="{% url 'cancel_request' request.id %}" class="cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No pending requests, bro! 😎</p>
+                {% endif %}
+            </div>
+            <div class="section menu-options">
+                <div class="menu-option"><a href="{% url 'add_card' %}"><span class="emoji">💳</span> Add Card</a></div>
+                <div class="menu-option"><a href="{% url 'view_cards' %}"><span class="emoji">👁️</span> View Cards</a></div>
+                <div class="menu-option"><a href="{% url 'add_money' %}"><span class="emoji">💰</span> Add Money</a></div>
+                <div class="menu-option"><a href="{% url 'remove_card' %}"><span class="emoji">🗑️</span> Remove Card</a></div>
+                <div class="menu-option"><a href="{% url 'send_money' %}"><span class="emoji">💸</span> Send Money</a></div>
+                <div class="menu-option"><a href="{% url 'manage_contacts' %}"><span class="emoji">📇</span> Manage Contacts</a></div>
+                <div class="menu-option"><a href="{% url 'request_money' %}"><span class="emoji">📋</span> Request Money</a></div>
+                <div class="menu-option"><a href="{% url 'manage_transactions' %}"><span class="emoji">📊</span> Manage Transactions</a></div>
+                <div class="menu-option"><a href="{% url 'view_profile' %}"><span class="emoji">{{ gender_emoji }}</span> View Profile</a></div>
+                <div class="menu-option"><a href="{% url 'edit_profile' %}"><span class="emoji">✏️</span> Edit Profile</a></div>
+                <div class="menu-option"><a href="{% url 'manage_currency' %}"><span class="emoji">🌍</span> Manage Currency</a></div>
+                <div class="menu-option"><a href="{% url 'security_settings' %}"><span class="emoji">🔒</span> Security Settings</a></div>
+                <div class="menu-option"><a href="{% url 'delete_account' %}"><span class="emoji">❌</span> Delete Account</a></div>
+            </div>
+        </div>
+        <div class="logout-form">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Log Out</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

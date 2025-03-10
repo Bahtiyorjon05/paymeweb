@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Generate Report 📊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall 8s linear infinite;
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(111, 14, 167, 0.3), 0 0 15px rgba(0, 234, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #1aa57b, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(17, 167, 92, 0.6), 0 0 20px rgba(0, 234, 255, 0.4);
+            margin-bottom: 20px;
+            animation: neonPulse 3s infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #1aa57b; }
+            50% { text-shadow: 0 0 15px #00eaff; }
+            100% { text-shadow: 0 0 10px #1aa57b; }
+        }
+        .report-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.2);
+        }
+        h2 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 1.8rem;
+            color: #00eaff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+        }
+        .report-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .report-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.4);
+        }
+        .report-label {
+            font-weight: 600;
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+        }
+        .report-value {
+            color: #fff;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        .download-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .download-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a;
+        }
+        .back-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(17, 167, 92, 0.7);
+            font-family: 'Righteous', sans-serif;
+            margin-top: 30px;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #268d0c;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 20px; margin: 20px auto; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .report-item { padding: 10px; font-size: 0.9rem; flex-direction: column; }
+            .download-btn, .back-btn { font-size: 1rem; padding: 10px 20px; }
+            .emoji { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Generate Report 📊</h1>
+        <a href="?download_pdf=1" class="download-btn">Download PDF 📥</a>
+        <div class="report-section">
+            <h2>User Stats</h2>
+            <div class="report-item">
+                <span class="report-label">Total Users:</span>
+                <span class="report-value">{{ report.total_users }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Male Users:</span>
+                <span class="report-value">{{ report.male_users }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Female Users:</span>
+                <span class="report-value">{{ report.female_users }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">New Users This Month:</span>
+                <span class="report-value">{{ report.new_users_month }}</span>
+            </div>
+        </div>
+        <div class="report-section">
+            <h2>Card Stats</h2>
+            <div class="report-item">
+                <span class="report-label">Total Cards:</span>
+                <span class="report-value">{{ report.total_cards }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">User with Most Cards:</span>
+                <span class="report-value">{{ report.most_cards.username }} ({{ report.most_cards.count }})</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">User with Least Cards:</span>
+                <span class="report-value">{{ report.least_cards.username }} ({{ report.least_cards.count }})</span>
+            </div>
+        </div>
+        <div class="report-section">
+            <h2>Transaction Stats</h2>
+            <div class="report-item">
+                <span class="report-label">Total Transactions:</span>
+                <span class="report-value">{{ report.total_tx_count }}</span>
+            </div>
+            {% for tx in report.tx_by_currency %}
+                <div class="report-item">
+                    <span class="report-label">{{ tx.currency }}:</span>
+                    <span class="report-value">{{ tx.total }} ({{ tx.count }} tx)</span>
+                </div>
+            {% endfor %}
+            <div class="report-item">
+                <span class="report-label">Most Active User:</span>
+                <span class="report-value">{{ report.most_active.username }} ({{ report.most_active.tx_count }} tx)</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Least Active User:</span>
+                <span class="report-value">{{ report.least_active.username }} ({{ report.least_active.tx_count }} tx)</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Busiest Day:</span>
+                <span class="report-value">{{ report.busiest_day }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Avg Tx per User:</span>
+                <span class="report-value">{{ report.avg_tx_per_user }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Top Currency:</span>
+                <span class="report-value">{{ report.top_currency }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Most Frequent Pair:</span>
+                <span class="report-value">{{ report.frequent_pair }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Pending Backlog:</span>
+                <span class="report-value">{{ report.pending_backlog }}</span>
+            </div>
+        </div>
+        <div class="report-section">
+            <h2>Complaints & Issues</h2>
+            <div class="report-item">
+                <span class="report-label">Total Complaints:</span>
+                <span class="report-value">{{ report.total_complaints }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Total Contact Queries:</span>
+                <span class="report-value">{{ report.total_contact_queries }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Open Contact Queries:</span>
+                <span class="report-value">{{ report.open_contact_queries }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Total Report Issues:</span>
+                <span class="report-value">{{ report.total_report_issues }}</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">Open Report Issues:</span>
+                <span class="report-value">{{ report.open_report_issues }}</span>
+            </div>
+        </div>
+        <div class="report-section">
+            <h2>Contact Stats</h2>
+            <div class="report-item">
+                <span class="report-label">User with Most Contacts:</span>
+                <span class="report-value">{{ report.most_contacts.username }} ({{ report.most_contacts.count }})</span>
+            </div>
+            <div class="report-item">
+                <span class="report-label">User with Least Contacts:</span>
+                <span class="report-value">{{ report.least_contacts.username }} ({{ report.least_contacts.count }})</span>
+            </div>
+        </div>
+        <a href="{% url 'admin_dashboard' %}" class="back-btn">
+            <span class="emoji">🔙</span>Back to Dashboard
+        </a>
+    </div>
+    <script>
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = '$';
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+    </script>
+</body>
+</html>

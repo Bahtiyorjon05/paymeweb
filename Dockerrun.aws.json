@@ -1,0 +1,15 @@
+
+
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "bahtiyor05/paymebot:latest",
+      "Update": "true"
+    },
+    "Ports": [
+      {
+        "ContainerPort": 8000,
+        "HostPort": 80
+      }
+    ]
+  }

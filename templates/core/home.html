@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall linear infinite;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 7rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff;
+            animation: neonPulse 3s infinite alternate;
+            margin-bottom: 30px;
+        }
+        h1 .emoji {
+            font-size: 4.5rem;
+            animation: wobble 2s infinite;
+        }
+        .intro {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 60px;
+            background: linear-gradient(90deg, #ff007a, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: slideInLeft 1.5s ease forwards;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .option {
+            flex: 1 1 200px;
+            max-width: 250px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .option::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 0, 122, 0.5), transparent);
+            transition: top 0.5s ease;
+        }
+        .option:hover::before {
+            top: 100%;
+        }
+        .option:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px #ff007a, 0 0 60px #00eaff;
+        }
+        .option a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 122, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .option a.active {
+            background: linear-gradient(45deg, #00eaff, #ff007a);
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.7);
+        }
+        .option a:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px #fff, 0 0 60px #ff007a;
+            background: linear-gradient(45deg, #fff, #00eaff);
+        }
+        .option a .emoji {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+        .option a:hover .emoji {
+            transform: rotate(20deg);
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 20px #ff007a; }
+            50% { text-shadow: 0 0 30px #00eaff; }
+            100% { text-shadow: 0 0 20px #ff007a; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 5em; }
+            h1 .emoji { font-size: 2.5rem; }
+            .intro { font-size: 1.3rem; }
+            .option a{ font-size: 1.2rem; padding: 12px 20px}
+            .telegram { font-size: 1.5rem; padding: 10px 20px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Payme</h1>
+        <p class="intro">Unlock the Future of Payments!</p>
+        <div class="options">
+            <div class="option"><a href="{% url 'signup' %}" class="active"><span class="emoji">🚀</span> Sign Up</a></div>
+            <div class="option"><a href="{% url 'login' %}" class="active"><span class="emoji">🔑</span> Login</a></div>
+            <div class="option"><a href="{% url 'forgot_password' %}"><span class="emoji">🔒</span> Forgot Password</a></div>
+            <div class="option"><a href="{% url 'admin_login' %}"><span class="emoji">👑</span> Admin Login</a></div>
+            <div class="option"><a href="{% url 'help_faq' %}"><span class="emoji">❓</span> Help & FAQ</a></div>
+            <div class="option"><a href="{% url 'currency_converter' %}"><span class="emoji">🌍</span>Convert Currency</a></div>
+            <div class="option"><a href="{% url 'contact_support' %}"><span class="emoji">📞</span> Contact Support</a></div>
+            <div class="option"><a href="{% url 'report_issue' %}" class="active"><span class="emoji">⚠️</span> Report Issue</a></div>
+        </div>
+        <!-- <div class="telegram">
+            <a href="https://t.me/PaayMeeBot" target="_blank"><i class="fab fa-telegram-plane"></i> Join @PaayMeeBot 🤖</a>
+        </div> -->
+    </div>
+    <script>
+        // Matrix rain effect
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Random letter
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+
+        // Option button hover spin
+        const options = document.querySelectorAll('.option a');
+        options.forEach(opt => {
+            opt.addEventListener('mouseenter', () => {
+                opt.style.transform = 'scale(1.15) rotate(360deg)';
+                opt.style.boxShadow = '0 0 30px #fff, 0 0 60px #ff007a';
+            });
+            opt.addEventListener('mouseleave', () => {
+                opt.style.transform = 'scale(1)';
+                opt.style.boxShadow = opt.classList.contains('active') ? '0 0 20px #00eaff' : '0 0 20px #ff007a';
+            });
+            opt.addEventListener('click', () => {
+                opt.style.transform = 'scale(0.95)';
+                setTimeout(() => opt.style.transform = 'scale(1)', 100);
+            });
+        });
+
+        // Telegram button wave
+        const telegramBtn = document.querySelector('.telegram a');
+        setInterval(() => {
+            telegramBtn.style.boxShadow = '0 0 40px #ff007a, 0 0 80px #00eaff';
+            setTimeout(() => telegramBtn.style.boxShadow = '0 0 25px #ff007a', 600);
+        }, 1200);
+    </script>
+</body>
+</html>

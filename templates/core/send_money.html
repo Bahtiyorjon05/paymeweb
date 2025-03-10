@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Send Money</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto; /* Smooth scrolling, no tremble */
+        }
+        .container {
+            max-width: 500px; /* Clean, user-friendly width */
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05); /* Glass effect, senior-level */
+            border-radius: 30px; /* Larger rounding */
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2); /* Softer shadow, no tremble */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease; /* Smooth scaling */
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem; /* Clean, senior-level title */
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a;
+            margin-bottom: 30px; /* More space below title */
+        }
+        .options-slider {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Clean spacing, match Grid Cards */
+            padding: 20px 0;
+            overflow: hidden; /* For slide animation */
+        }
+        .option-card {
+            background: rgba(255, 255, 255, 0.08); /* Subtle glass, creative, match Grid Cards */
+            border-radius: 30px; /* Rounded, creative, match Grid Cards */
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.1); /* Minimal shadow, no tremble, match Grid Cards */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease; /* Smooth slide + hover */
+            min-width: 300px; /* Wider to fit text fully, senior-level adjustment */
+        }
+        .option-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .option-card:hover {
+            transform: scale(1.05); /* Larger hover, match Grid Cards */
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.3); /* Softer shadow on hover, match Grid Cards */
+        }
+        .option-card a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.3rem; /* Larger, clean text, match Grid Cards */
+            font-weight: 600; /* Bold for clarity */
+            display: block;
+            transition: color 0.3s ease; /* Smooth, no tremble */
+        }
+        .option-card a:hover {
+            color: #00eaff;
+        }
+        a.back-btn {
+            padding: 12px 25px; /* Clean, standard button size */
+            font-size: 1.2rem; /* Readable text */
+            background: linear-gradient(45deg, #ff007a, #00eaff); /* Neon gradient */
+            border: none;
+            border-radius: 30px; /* Rounded, creative */
+            color: #fff;
+            cursor: pointer;
+            margin: 20px 0; /* Clean spacing */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+            text-decoration: none;
+            display: inline-block;
+            min-width: 200px; /* Clean width */
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.3); /* Subtle shadow, no tremble */
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.5); /* Softer shadow, no tremble */
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 3rem; }
+            .option-card { padding: 15px; }
+            .option-card a { font-size: 1.1rem; }
+            a.back-btn { font-size: 1rem; padding: 10px 20px; margin: 15px 0; min-width: 180px; }
+        }
+    </style>
+    <script>
+        // Simple slide animation (CSS-driven, but JS for staggered effect)
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.option-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => card.classList.add('active'), index * 500); // Staggered slide-in, match Vertical Slider
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Money</h1> <!-- No emoji, clean H1 due to font issues -->
+        <div class="options-slider">
+            <div class="option-card"><a href="{% url 'send_to_contact' %}">Send to a Contact</a></div>
+            <div class="option-card"><a href="{% url 'send_to_card' %}">Send to a Card Number</a></div>
+        </div>
+        <a href="{% url 'dashboard' %}" class="back-btn">Back to Dashboard 🏠</a>
+    </div>
+</body>
+</html>

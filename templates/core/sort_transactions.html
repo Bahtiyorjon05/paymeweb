@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Sort Transactions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 1000px; /* Wider for a nicely designed table */
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a;
+            margin-bottom: 30px;
+        }
+        .transactions-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .transactions-table th, .transactions-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .transactions-table th {
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
+        }
+        .transactions-table tr:hover td {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
+        }
+        .transactions-table td {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .request { color: #ff4444; text-shadow: 0 0 5px rgba(255, 68, 68, 0.5); }
+        .completed { color: #00eaff; text-shadow: 0 0 5px rgba(0, 234, 255, 0.5); }
+        a.back-btn {
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 220px;
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.3);
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.5);
+        }
+        .success { color: #00eaff; }
+        .error { color: #ff4444; }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 3rem; }
+            .transactions-table th, .transactions-table td { padding: 5px; font-size: 0.9rem; }
+            .transactions-table { border-radius: 15px; }
+            a.back-btn { font-size: 1.1rem; padding: 12px 25px; margin: 15px 0; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sorted Transactions</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        {% if transactions %}
+            <table class="transactions-table">
+                <tr>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td>{{ transaction.sender.first_name }} {{ transaction.sender.last_name }}</td>
+                        <td>{{ transaction.receiver.first_name }} {{ transaction.receiver.last_name }}</td>
+                        <td>{{ transaction.amount }} {{ transaction.currency }}</td>
+                        <td class="{% if transaction.status == 'request' %}request{% else %}completed{% endif %}">
+                            {{ transaction.status|capfirst }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No transactions to sort, bro! 📊</p>
+        {% endif %}
+        <a href="{% url 'manage_transactions' %}" class="back-btn">Back to Manage Transactions 🏠</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Delete Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a33);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            padding: 60px 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 35px;
+            box-shadow: 0 12px 30px rgba(255, 0, 122, 0.15), 0 0 40px rgba(0, 234, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeIn 1s ease-in;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.25), 0 0 50px rgba(0, 234, 255, 0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px #ff4444, 0 0 15px #ff007a;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: pulseWarning 2s ease-in-out infinite;
+        }
+        @keyframes pulseWarning {
+            0%, 100% { text-shadow: 0 0 25px #ff4444, 0 0 15px #ff007a; }
+            50% { text-shadow: 0 0 35px #ff4444, 0 0 25px #ff007a; }
+        }
+        .warning {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            animation: shake 0.5s ease-in-out infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .form-box {
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.1), 0 0 20px rgba(0, 234, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease-in 0.5s;
+        }
+        .form-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.2), 0 0 30px rgba(0, 234, 255, 0.1);
+        }
+        p.confirm-text {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in 0.7s;
+        }
+        form {
+            display: inline-block;
+            margin: 10px;
+        }
+        button.delete-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff4444, #ff007a);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 68, 68, 0.3), 0 0 20px rgba(255, 0, 122, 0.1);
+            animation: dangerPulse 2s ease-in-out infinite;
+        }
+        @keyframes dangerPulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 68, 68, 0.3), 0 0 20px rgba(255, 0, 122, 0.1); }
+            50% { box-shadow: 0 12px 35px rgba(255, 68, 68, 0.5), 0 0 30px rgba(255, 0, 122, 0.2); }
+        }
+        button.delete-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 68, 68, 0.5), 0 0 30px rgba(255, 0, 122, 0.2);
+        }
+        button.cancel-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #007bff, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button.cancel-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 123, 255, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .success { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        .error { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 2.5rem; }
+            .warning { font-size: 1.2rem; }
+            .form-box { padding: 20px; border-radius: 20px; }
+            p.confirm-text { font-size: 1.1rem; margin-bottom: 15px; }
+            button.delete-btn, button.cancel-btn { font-size: 1.1rem; padding: 12px 25px; margin: 10px 0; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Account</h1>
+        <p class="warning">WARNING: This action is irreversible! All your data, cards, and transactions will be permanently deleted. 🚨</p>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <p class="confirm-text">Are you absolutely sure you want to delete your account?</p>
+        <div class="form-box">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="step" value="confirm">
+                <button type="submit" class="delete-btn">Yes, I’m Sure</button>
+                <button type="button" onclick="window.location.href='{% url 'dashboard' %}'" class="cancel-btn">No, Cancel</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Help FAQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall linear infinite;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 6rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff;
+            animation: neonPulse 3s infinite alternate;
+            margin-bottom: 30px;
+        }
+        .search-container {
+            margin: 30px 0;
+        }
+        #faq-search {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        #faq-search:focus {
+            box-shadow: 0 0 30px #ff007a, 0 0 50px #00eaff;
+            transform: scale(1.05);
+            outline: none;
+        }
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 20px 40px;
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 40px;
+            color: #fff;
+            text-decoration: none;
+            margin: 20px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff;
+        }
+        .faq-item {
+            margin: 25px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px rgba(255, 0, 122, 0.3);
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: slideIn 0.8s ease forwards;
+        }
+        .faq-item:hover {
+            transform: scale(1.02);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px #00eaff;
+        }
+        .faq-question {
+            padding: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, rgba(255, 0, 122, 0.1), rgba(0, 234, 255, 0.1));
+            transition: background 0.3s ease;
+        }
+        .faq-question:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 122, 0.3), rgba(0, 234, 255, 0.3));
+        }
+        .faq-question .emoji {
+            font-size: 1.8rem;
+            margin-left: 10px;
+            text-shadow: 0 0 15px #ff007a, 0 0 25px #00eaff; /* Glow with text */
+            transition: transform 0.3s ease;
+        }
+        .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .faq-answer.show {
+            max-height: 300px;
+            padding: 20px;
+        }
+        .floating-help {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: 0 0 20px #ff007a, 0 0 40px #00eaff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+            animation: float 4s infinite ease-in-out;
+        }
+        .floating-help:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #fff, 0 0 60px #ff007a;
+        }
+        .icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .rotated {
+            transform: rotate(180deg);
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 20px #ff007a; }
+            50% { text-shadow: 0 0 30px #00eaff; }
+            100% { text-shadow: 0 0 20px #ff007a; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 4.5rem}
+            .faq-question { font-size: 1.2rem; }
+            .faq-question .emoji { font-size: 1.5rem; }
+            .faq-answer { font-size: 1rem; }
+            .back-btn {max-width: 300px; font-size: 1.5em; padding: 20px;}
+            .floating-help { bottom: 10px; right: 10px; font-size: 1.2rem; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Payme Help/FAQ</h1>
+        <div class="search-container">
+            <input type="text" id="faq-search" placeholder="Search FAQs... 🔍" autocomplete="off">
+        </div>
+        <div class="faq-container" id="faq-container"></div>
+        <a href="{% url 'contact_support' %}" class="floating-help">Need Help? 🤖</a>
+        <a href="{% url 'home' %}" class="back-btn">Back to Home 🏠</a>
+    </div>
+    <script>
+        // Matrix rain effect (stable)
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 150); // Slower for stability
+
+        // FAQ data as constants (easy to expand)
+        const faqs = [
+            { question: "How do I sign up for Payme?", answer: "Click 'Sign Up' on the homepage, enter your details (name, phone, etc.), and create a password. Boom—you’re in, bro! 🚀" },
+            { question: "What payment methods does Payme support?", answer: "Payme supports card payments in UZS, RUB, USD, KRW, and EUR. Add your card in the dashboard! 💳" },
+            { question: "How do I reset my password?", answer: "Go to 'Forgot Password,' enter your phone, then email. We’ll send a code—use it to set a new password. Easy, dude! 🔑" },
+            { question: "Can I contact support?", answer: "Yep! Hit 'Contact Support' on the homepage or use the floating help button below. We’re here 24/7, bro! 📞" },
+        ];
+
+        // Render FAQs dynamically
+        const faqContainer = document.getElementById('faq-container');
+        faqs.forEach((faq, index) => {
+            const faqItem = document.createElement('div');
+            faqItem.className = 'faq-item';
+            faqItem.innerHTML = `
+                <div class="faq-question" onclick="toggleFAQ(${index})">
+                    <span>${faq.question} <span class="emoji">${faq.answer.match(/[\u{1F300}-\u{1F6FF}]/gu)?.[0] || ''}</span></span>
+                    <i class="fas fa-chevron-down icon"></i>
+                </div>
+                <div class="faq-answer" id="faq-${index}">
+                    <p>${faq.answer}</p>
+                </div>
+            `;
+            faqContainer.appendChild(faqItem);
+            setTimeout(() => faqItem.classList.add('show'), index * 200); // Staggered entry
+        });
+
+        // FAQ toggle (smooth, no jank)
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`faq-${index}`);
+            const icon = document.querySelector(`#faq-${index}`).previousElementSibling.querySelector('.icon');
+            answer.classList.toggle('show');
+            icon.classList.toggle('rotated');
+        }
+
+        // Search FAQs (stable filter)
+        document.getElementById('faq-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer p')?.textContent.toLowerCase() || '';
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    item.style.opacity = '1';
+                } else {
+                    item.style.display = 'none';
+                    item.style.opacity = '0';
+                }
+            });
+        });
+
+        // Rotate icon on click (smooth)
+        document.querySelectorAll('.icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                this.classList.toggle('rotated');
+            });
+        });
+    </script>
+</body>
+</html>

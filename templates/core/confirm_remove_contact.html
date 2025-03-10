@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Confirm Remove Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto; /* Smooth scrolling, no tremble */
+        }
+        .container {
+            max-width: 500px; /* Clean, user-friendly width */
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05); /* Glass effect, beyond-senior-level polish */
+            border-radius: 30px; /* Larger rounding, modern, creative */
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2); /* Softer shadow, no tremble */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease; /* Smooth scaling */
+        }
+        .container:hover {
+            transform: scale(1.02); /* Subtle zoom, user-friendly */
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3rem; /* Clean, readable title */
+            background: linear-gradient(45deg, #ff007a, #00eaff); /* Neon gradient, brand-consistent */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a; /* Neon glow, creative */
+            margin-bottom: 20px; /* More space, clean layout */
+        }
+        p {
+            font-size: 1.2rem; /* Clean, readable text */
+            margin-bottom: 25px; /* Clean spacing, beyond-senior-level layout */
+            color: #fff;
+        }
+        p strong {
+            color: #00eaff; /* Neon highlight, creative, brand-consistent */
+            font-weight: 600; /* Bold for clarity */
+        }
+        form {
+            margin-bottom: 20px; /* Clean spacing */
+        }
+        button.confirm-btn, a.cancel-btn {
+            padding: 12px 25px; /* Clean, standard button size */
+            font-size: 1.2rem; /* Readable text */
+            background: linear-gradient(45deg, #ff007a, #00eaff); /* Neon gradient, brand-consistent */
+            border: none;
+            border-radius: 20px; /* Rounded, creative */
+            color: #fff;
+            cursor: pointer;
+            margin: 10px 0; /* Clean spacing between buttons */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth, no tremble */
+            text-decoration: none;
+            display: inline-block;
+            min-width: 180px; /* Clean width, user-friendly */
+            box-shadow: 0 4px 15px rgba(255, 0, 122, 0.3); /* Subtle shadow, no tremble */
+        }
+        button.confirm-btn:hover, a.cancel-btn:hover {
+            transform: scale(1.1); /* Subtle zoom, user-friendly */
+            box-shadow: 0 6px 20px rgba(255, 0, 122, 0.5); /* Softer shadow, no tremble */
+        }
+        .success { color: #00eaff; }
+        .error { color: #ff4444; }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 350px; padding: 30px 20px; /* Smaller on mobile */ }
+            h1 { font-size: 2.5rem; /* Smaller, readable */ }
+            p { font-size: 1rem; /* Readable on mobile */ }
+            button.confirm-btn, a.cancel-btn { font-size: 1rem; padding: 10px 20px; margin: 8px 0; min-width: 160px; /* Smaller, mobile-friendly */ }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirm Remove Contact</h1> <!-- No emoji, clean H1 due to font issues -->
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <p>Are you sure you want to remove {{ contact.contact_user.first_name }} {{ contact.contact_user.last_name }} ({{ contact.contact_user.phone_number }})? 🗑️</p> <!-- Emoji here, supported, creative -->
+        <form method="post" action="{% url 'confirm_remove_contact' %}">
+            {% csrf_token %}
+            <input type="hidden" name="contact_id" value="{{ contact.id }}">
+            <button type="submit" class="confirm-btn">Confirm 🗑️</button> <!-- Emoji here, supported, creative -->
+        </form>
+        <a href="{% url 'manage_contacts' %}" class="cancel-btn">Cancel 🏠</a> <!-- Emoji here, supported, creative -->
+    </div>
+</body>
+</html>

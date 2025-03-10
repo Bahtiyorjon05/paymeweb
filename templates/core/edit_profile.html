@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Edit Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a33);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            padding: 60px 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 35px;
+            box-shadow: 0 12px 30px rgba(255, 0, 122, 0.15), 0 0 40px rgba(0, 234, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.25), 0 0 50px rgba(0, 234, 255, 0.2);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff; }
+            50% { text-shadow: 0 0 35px #ff007a, 0 0 25px #00eaff; }
+        }
+        .form-box {
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.1), 0 0 20px rgba(0, 234, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.2), 0 0 30px rgba(0, 234, 255, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        select, input[type="text"], input[type="number"], input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        select:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
+            box-shadow: inset 0 0 18px #00eaff, 0 4px 15px rgba(255, 0, 122, 0.3);
+            transform: scale(1.03);
+            outline: none;
+        }
+        select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+            background-size: 20px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        select option {
+            background: #0a0a23;
+            color: #fff;
+            padding: 10px;
+            font-size: 1.1rem;
+            text-align: left;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        select option::before {
+            content: attr(data-emoji);
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        button, a.back-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button:hover, a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .emoji {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #00eaff;
+            text-shadow: 0 0 10px rgba(0, 234, 255, 0.3);
+        }
+        .success { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        .error { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        .password-form {
+            display: none;
+            margin-top: 15px;
+            animation: slideDown 0.5s ease-in-out;
+        }
+        .password-form.active {
+            display: block;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 2.5rem; }
+            .form-box { padding: 20px; border-radius: 20px; }
+            .form-group label { font-size: 1.1rem; }
+            select, input[type="text"], input[type="number"], input[type="password"] { font-size: 0.9rem; padding: 12px; }
+            button, a.back-btn { font-size: 1.1rem; padding: 12px 25px; margin: 10px 0; min-width: 180px; }
+            .emoji { font-size: 1.5rem; margin-right: 8px; }
+            select { background-size: 18px; padding-right: 35px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Your Profile</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <div class="form-box">
+            <form method="POST" action="{% url 'edit_profile' %}" id="editForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="field"><span class="emoji">🌟</span> Pick a Field to Edit:</label>
+                    <select name="field" id="field">
+                        <option value="">-- Select --</option>
+                        <option value="first_name" data-emoji="👤">First Name</option>
+                        <option value="last_name" data-emoji="👤">Last Name</option>
+                        <option value="age" data-emoji="🎂">Age</option>
+                        <option value="username" data-emoji="📛">Username</option>
+                        <option value="phone_number" data-emoji="📞">Phone Number</option>
+                        <option value="password" data-emoji="🔑">Password</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="new_value" id="new_value" placeholder="Enter new value..." autocomplete="off">
+                </div>
+                <div class="password-form {% if show_password_form %}active{% endif %}" id="passwordForm">
+                    <div class="form-group">
+                        <input type="password" name="current_password" id="current_password" placeholder="Current Password..." autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="new_password" id="new_password" placeholder="New Password..." autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm New Password..." autocomplete="new-password">
+                    </div>
+                </div>
+                <button type="submit">Update 🚀</button>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-btn"><span class="emoji">🏠</span> Back to Dashboard</a>
+        </div>
+        <script>
+            function updateForm() {
+                var field = document.getElementById('field').value;
+                var newValueInput = document.getElementById('new_value');
+                var passwordForm = document.getElementById('passwordForm');
+                var currentPassword = document.getElementById('current_password');
+                var newPassword = document.getElementById('new_password');
+                var confirmPassword = document.getElementById('confirm_password');
+
+                if (field === 'password') {
+                    passwordForm.classList.add('active');
+                    newValueInput.style.display = 'none';
+                    newValueInput.removeAttribute('required');
+                    currentPassword.setAttribute('required', 'required');
+                    newPassword.setAttribute('required', 'required');
+                    confirmPassword.setAttribute('required', 'required');
+                    newValueInput.value = '';
+                } else {
+                    passwordForm.classList.remove('active');
+                    newValueInput.style.display = 'block';
+                    newValueInput.setAttribute('required', 'required');
+                    currentPassword.removeAttribute('required');
+                    newPassword.removeAttribute('required');
+                    confirmPassword.removeAttribute('required');
+                    newValueInput.type = (field === 'age') ? 'number' : 'text';
+                    newValueInput.placeholder = (field === 'age') ? 'Enter new age (13-120)...' : 'Enter new value...';
+                    newValueInput.value = '';
+                    currentPassword.value = '';
+                    newPassword.value = '';
+                    confirmPassword.value = '';
+                }
+            }
+
+            window.onload = function() {
+                updateForm();
+                document.getElementById('field').addEventListener('change', updateForm);
+            };
+        </script>
+    </div>
+</body>
+</html>

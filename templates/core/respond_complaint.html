@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Respond to Complaint 📩</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall 8s linear infinite;
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(111, 14, 167, 0.3), 0 0 15px rgba(0, 234, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #1aa57b, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(17, 167, 92, 0.6), 0 0 20px rgba(0, 234, 255, 0.4);
+            margin-bottom: 20px;
+            animation: neonPulse 3s infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #1aa57b; }
+            50% { text-shadow: 0 0 15px #00eaff; }
+            100% { text-shadow: 0 0 10px #1aa57b; }
+        }
+        .complaint-details {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+        }
+        .detail-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+        }
+        .detail-value {
+            color: #fff;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            word-wrap: break-word;
+            max-width: 70%;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .message-success {
+            color: #00eaff;
+            text-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+            font-size: 1.1rem;
+        }
+        .message-error {
+            color: #ff007a;
+            text-shadow: 0 0 5px rgba(255, 0, 122, 0.5);
+            font-size: 1.1rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 234, 255, 0.5);
+            border-radius: 10px;
+            color: #fff;
+            resize: vertical;
+            transition: border 0.3s ease;
+        }
+        textarea:focus {
+            border: 1px solid #00eaff;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
+        }
+        .send-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff007a;
+        }
+        .back-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(17, 167, 92, 0.7);
+            font-family: 'Righteous', sans-serif;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #268d0c;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 20px; margin: 20px auto; }
+            h1 { font-size: 2rem; }
+            .detail-item { flex-direction: column; font-size: 0.9rem; }
+            .detail-value { max-width: 100%; }
+            .messages { font-size: 0.9rem; }
+            textarea { width: 100%; height: 120px; font-size: 0.9rem; }
+            .send-btn { font-size: 1rem; padding: 10px 20px; }
+            .back-btn { font-size: 1rem; padding: 10px 20px; }
+            .emoji { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Respond to Complaint 📩</h1>
+        <div class="messages">
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="message-success">{{ message }}</div>
+                {% elif message.tags == 'error' %}
+                    <div class="message-error">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="complaint-details">
+            <div class="detail-item">
+                <span class="detail-label">ID:</span>
+                <span class="detail-value">{{ complaint.id }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value">{{ complaint.name }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ complaint.email }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Message:</span>
+                <span class="detail-value">{{ complaint.message }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Submitted Time:</span>
+                <span class="detail-value">{{ complaint.submitted_time }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">{{ complaint.status }}</span>
+            </div>
+            {% if complaint.response %}
+                <div class="detail-item">
+                    <span class="detail-label">Response:</span>
+                    <span class="detail-value">{{ complaint.response }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Answered Time:</span>
+                    <span class="detail-value">{{ complaint.answered_time }}</span>
+                </div>
+            {% endif %}
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="response" placeholder="Type your response here, bro..." required></textarea>
+            <button type="submit" class="send-btn">Send Email 📧</button>
+        </form>
+        <a href="{% url 'view_all_complaints' %}" class="back-btn">
+            <span class="emoji">🔙</span>Back to Complaints
+        </a>
+    </div>
+    <script>
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = '$';
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+    </script>
+</body>
+</html>

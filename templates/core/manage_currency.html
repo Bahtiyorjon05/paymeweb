@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Manage Currency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a33);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            padding: 60px 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 35px;
+            box-shadow: 0 12px 30px rgba(255, 0, 122, 0.15), 0 0 40px rgba(0, 234, 255, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.25), 0 0 50px rgba(0, 234, 255, 0.2);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 25px #ff007a, 0 0 15px #00eaff; }
+            50% { text-shadow: 0 0 35px #ff007a, 0 0 25px #00eaff; }
+        }
+        .form-box {
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.1), 0 0 20px rgba(0, 234, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.2), 0 0 30px rgba(0, 234, 255, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+            background-size: 20px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        select:focus {
+            box-shadow: inset 0 0 18px #00eaff, 0 4px 15px rgba(255, 0, 122, 0.3);
+            transform: scale(1.03);
+            outline: none;
+        }
+        select option {
+            background: #0a0a23;
+            color: #fff;
+            padding: 10px;
+            font-size: 1.1rem;
+            text-align: left;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        select option::before {
+            content: attr(data-emoji);
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        button {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        a.back-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.3), 0 0 20px rgba(0, 234, 255, 0.1);
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 0, 122, 0.5), 0 0 30px rgba(0, 234, 255, 0.2);
+        }
+        .success { color: #00eaff; text-shadow: 0 0 8px rgba(0, 234, 255, 0.3); }
+        .error { color: #ff4444; text-shadow: 0 0 8px rgba(255, 68, 68, 0.3); }
+        .rates-table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .rates-table th {
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.3rem;
+            padding: 18px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .rates-table td {
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .rates-table tr:hover td {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+        @media (max-width: 768px) {
+            .container { max-width: 400px; padding: 30px 20px; }
+            h1 { font-size: 3rem; }
+            .form-box { padding: 20px; border-radius: 20px; }
+            .form-group label { font-size: 1.1rem; }
+            select { font-size: 0.9rem; padding: 12px; background-size: 18px; padding-right: 35px; }
+            button, a.back-btn { font-size: 1.1rem; padding: 12px 25px; margin: 10px 0; min-width: 180px; }
+            .rates-table { width: 100%; }
+            .rates-table th, .rates-table td { font-size: 1rem; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Currency</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+        <p>Current Default: <strong>{{ default_currency }}</strong> 🌟</p>
+        <div class="form-box">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="currency"><span class="emoji">🌍</span> Pick a Currency:</label>
+                    <select name="base_currency" id="currency" required>
+                        <option value="">-- Select Currency --</option>
+                        <option value="UZS" data-emoji="🌍" {% if default_currency == 'UZS' %}selected{% endif %}>Uzbek Som (UZS)</option>
+                        <option value="RUB" data-emoji="🌐" {% if default_currency == 'RUB' %}selected{% endif %}>Russian Rubles (RUB)</option>
+                        <option value="USD" data-emoji="💵" {% if default_currency == 'USD' %}selected{% endif %}>US Dollar (USD)</option>
+                        <option value="KRW" data-emoji="🇰🇷" {% if default_currency == 'KRW' %}selected{% endif %}>Korean Won (KRW)</option>
+                        <option value="EUR" data-emoji="🇪🇺" {% if default_currency == 'EUR' %}selected{% endif %}>Euro (EUR)</option>
+                    </select>
+                </div>
+                <button type="submit" name="action" value="live_rates">Live Exchange Rates 📈</button>
+                <button type="submit" name="action" value="select_currency">Select Default Currency ✅</button>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-btn"><span class="emoji">🏠</span> Back to Dashboard</a>
+            {% if rates %}
+                <table class="rates-table">
+                    <tr><th>Currency</th><th>Rate (vs {{ base_currency }})</th></tr>
+                    {% for currency, rate in rates.items %}
+                        <tr><td>{{ currency }}</td><td>{{ rate|floatformat:2 }}</td></tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

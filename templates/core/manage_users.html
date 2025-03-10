@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Manage Users 👤</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall 8s linear infinite;
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(111, 14, 167, 0.3), 0 0 15px rgba(0, 234, 255, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #21d138, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(57, 192, 80, 0.6), 0 0 20px rgba(0, 234, 255, 0.4);
+            margin-bottom: 20px;
+            animation: neonPulse 3s infinite alternate;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #1eb432; }
+            50% { text-shadow: 0 0 15px #00eaff; }
+            100% { text-shadow: 0 0 10px #aa41db; }
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .option-btn {
+            padding: 15px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #1aa57b, #0b22a3);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(17, 167, 92, 0.7), 0 0 25px rgba(13, 152, 165, 0.5);
+            font-family: 'Righteous', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .option-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .option-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #268d0c, 0 0 40px #0f0696;
+            background: linear-gradient(45deg, #39d869, #145bdf);
+        }
+        .option-btn:hover::after {
+            opacity: 0.3;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 30px; margin: 20px auto; }
+            h1 { font-size: 2.5rem; }
+            .option-btn { font-size: 1rem; padding: 12px; }
+            .emoji { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Payme Manage Users</h1>
+        <div class="options-grid">
+            <button class="option-btn" data-action="view_all_users">
+                <span class="emoji">👀</span>View All Users
+            </button>
+            <button class="option-btn" data-action="sort_users">
+                <span class="emoji">🔄</span>Sort Users
+            </button>
+            <button class="option-btn" data-action="search_user">
+                <span class="emoji">🔍</span>Search User
+            </button>
+            <button class="option-btn" data-action="remove_user">
+                <span class="emoji">🗑️</span>Remove User
+            </button>
+            <button class="option-btn" data-action="view_blocked_users">
+                <span class="emoji">🔴</span>View Blocked Users
+            </button>
+            <button class="option-btn" data-action="unblock_user">
+                <span class="emoji">🔓</span>Unblock User
+            </button>
+            <button class="option-btn" data-action="block_user">
+                <span class="emoji">🔒</span>Block User
+            </button>
+            <button class="option-btn" data-action="view_users_contacts">
+                <span class="emoji">📇</span>View Users' Contacts
+            </button>
+            <button class="option-btn" data-action="back_menu">
+                <span class="emoji">🔙</span>Back to Admin Menu
+            </button>
+        </div>
+    </div>
+    <script>
+        // CSRF Token setup
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // AJAX for button clicks
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                fetch('/payme-admin/users/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: 'action=' + this.dataset.action
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    } else if (data.error) {
+                        console.error('Error:', data.error);
+                    }
+                })
+                .catch(error => console.error('Fetch Error:', error));
+            });
+        });
+
+        // Matrix rain effect
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = String.fromCharCode(36);
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+    </script>
+</body>
+</html>

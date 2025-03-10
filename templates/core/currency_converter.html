@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payme - Currency Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* [Your existing CSS remains unchanged—pasting for clarity] */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a23;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+        .bg-matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 35, 0.9), rgba(10, 10, 35, 1));
+            z-index: -1;
+        }
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 1rem;
+            color: #00eaff;
+            opacity: 0.7;
+            animation: rainFall linear infinite;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px #ff007a;
+            margin-bottom: 30px;
+            animation: neonPulse 3s infinite alternate;
+        }
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 0 0 10px #00eaff;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 20px;
+            background: #1a1a3a;
+            color: #fff;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.1), 0 0 10px #ff007a;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+        .form-group select:focus {
+            transform: scale(1.05);
+            box-shadow: inset 0 0 20px #ff007a, 0 0 30px #00eaff, 0 0 15px #fff;
+            outline: none;
+        }
+        .checkbox-group {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1a1a3a;
+            border: 2px solid #ff007a;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 0 15px #ff007a, inset 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .checkbox-group:hover {
+            box-shadow: 0 0 25px #00eaff, inset 0 0 20px #ff007a;
+            border-color: #00eaff;
+        }
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .checkbox-option:hover {
+            background: rgba(255, 0, 122, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff007a;
+        }
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            appearance: none;
+            background: #1a1a3a;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            position: relative;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .checkbox-option input[type="checkbox"]:checked {
+            background: #00eaff;
+            border-color: #00eaff;
+            box-shadow: 0 0 10px #00eaff;
+        }
+        .checkbox-option input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: #fff;
+            font-size: 14px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        button {
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #ff007a, #00eaff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 0, 122, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 40px #ff007a, 0 0 80px #00eaff;
+        }
+        .all-option {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #00eaff, #ff007a);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.7), 0 0 10px #ff007a;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .all-option::before {
+            content: '💰';
+            position: absolute;
+            right: 15px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        .all-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #00eaff, 0 0 15px #ff007a;
+        }
+        .all-option:hover::before {
+            opacity: 1;
+        }
+        .rates-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .rates-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .rate-card {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 122, 0.2), rgba(0, 234, 255, 0.2));
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .rate-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #ff007a;
+        }
+        .rate-card span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 10px #00eaff;
+        }
+        .rate-card .value {
+            font-size: 1.4rem;
+            color: #ffd700;
+            margin-top: 10px;
+        }
+        .error {
+            color: #ff4444;
+            font-size: 1.3rem;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #ff4444;
+        }
+        a.back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #00eaff, #ff007a);
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        a.back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px #00eaff;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 20px #ff007a; }
+            50% { text-shadow: 0 0 30px #00eaff; }
+            100% { text-shadow: 0 0 20px #ff007a; }
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes rainFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 90%; padding: 30px; }
+            h1 { font-size: 3rem; }
+            .form-group label { font-size: 1.2rem; }
+            .form-group select, .checkbox-option { font-size: 1rem; padding: 10px; }
+            .checkbox-group { max-height: 150px; }
+            button, .all-option { font-size: 1.2rem; padding: 12px 25px; }
+            .rate-card span { font-size: 1.5rem; }
+            .rate-card .value { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-matrix">
+        <div class="matrix-rain" id="rain"></div>
+    </div>
+    <div class="container">
+        <h1>Currency Converter</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form method="post" id="converterForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="base_currency">Convert From:</label>
+                <select name="base_currency" id="base_currency">
+                    {% for currency in all_currencies %}
+                        <option value="{{ currency }}" {% if currency == base_currency %}selected{% endif %}>{{ currency }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Convert To:</label>
+                <div class="checkbox-group">
+                    {% for currency in all_currencies %}
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="target_currencies" value="{{ currency }}" {% if currency in target_currencies %}checked{% endif %}>
+                            {{ currency }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <button type="submit" name="convert_all" value="1" class="all-option">Convert to All 💰</button>
+            </div>
+            <button type="submit">Convert 💱</button>
+        </form>
+        {% if rates %}
+            <div class="rates-container">
+                <div class="rates-table">
+                    {% for currency, value in rates.items %}
+                        <div class="rate-card">
+                            <span>{{ currency }}</span>
+                            <span class="value">{{ value|floatformat:2 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <a href="{% url 'home' %}" class="back-btn">Back to Home 🏠</a>
+    </div>
+    <script>
+        // Matrix rain effect
+        const rainContainer = document.getElementById('rain');
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = String.fromCharCode(36); // $ symbol
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 5000);
+        }
+        setInterval(createDrop, 100);
+
+        // Button and dropdown hover effects
+        const button = document.querySelector('button:not(.all-option)');
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'scale(1.1) rotate(5deg)';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'scale(1)';
+        });
+
+        const select = document.querySelector('select');
+        select.addEventListener('mouseenter', () => {
+            select.style.transform = 'scale(1.05)';
+            select.style.boxShadow = 'inset 0 0 20px #ff007a, 0 0 30px #00eaff, 0 0 15px #fff';
+        });
+        select.addEventListener('mouseleave', () => {
+            select.style.transform = 'scale(1)';
+            select.style.boxShadow = 'inset 0 0 15px rgba(255, 255, 255, 0.1), 0 0 10px #ff007a';
+        });
+
+        const allButton = document.querySelector('.all-option');
+        allButton.addEventListener('mouseenter', () => {
+            allButton.style.transform = 'scale(1.1)';
+            allButton.style.boxShadow = '0 0 30px #00eaff, 0 0 15px #ff007a';
+        });
+        allButton.addEventListener('mouseleave', () => {
+            allButton.style.transform = 'scale(1)';
+            allButton.style.boxShadow = '0 0 20px rgba(0, 234, 255, 0.7), 0 0 10px #ff007a';
+        });
+
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('mouseenter', () => {
+                checkbox.parentElement.style.transform = 'scale(1.05)';
+                checkbox.parentElement.style.background = 'rgba(255, 0, 122, 0.2)';
+                checkbox.parentElement.style.boxShadow = '0 0 10px #ff007a';
+            });
+            checkbox.addEventListener('mouseleave', () => {
+                checkbox.parentElement.style.transform = 'scale(1)';
+                checkbox.parentElement.style.background = 'transparent';
+                checkbox.parentElement.style.boxShadow = 'none';
+            });
+        });
+
+        // Unselect all checkboxes immediately and reliably after "Convert to All" submission
+        // Ensure "Convert to All" submits correctly while unselecting checkboxes
+        document.getElementById('converterForm').addEventListener('submit', (event) => {
+            const convertAllButton = event.submitter && event.submitter.name === 'convert_all';
+            if (convertAllButton) {
+                // Unselect all checkboxes immediately
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                // Allow the form to submit with "convert_all" intact, no prevention needed
+                // The view will handle the reset correctly
+            }
+        });
+    </script>
+</body>
+</html>
