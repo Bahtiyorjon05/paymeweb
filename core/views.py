@@ -1478,74 +1478,56 @@ def currency_converter(request):
         'all_currencies': all_currencies,
         'base_currency': 'USD'
     })
-################################################33
+################################################
 
-#   ADMIN DASHBOARD FUNCTIONS 
+# Admin Views
+from django.contrib.auth.hashers import check_password
+from django.conf import settings
+from django.contrib import messages
+from django.shortcuts import render, redirect
+import logging
+
+logger = logging.getLogger(__name__)
 
 def admin_login(request):
-    # Always show login page on GET, reset is_admin unless authenticated
     if request.method == 'GET':
-        # Clear is_admin unless freshly logged in this request
         if 'is_admin' in request.session and not request.session.get('_fresh_login', False):
             del request.session['is_admin']
-        # Clear messages for fresh start
         storage = messages.get_messages(request)
-        if storage:
-            for _ in storage:
-                pass
-            storage.used = True
+        for _ in storage:
+            pass
+        storage.used = True
         return render(request, 'core/admin_login.html')
 
-    # Handle POST login
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
 
-        # Clear messages before processing
         storage = messages.get_messages(request)
-        if storage:
-            for _ in storage:
-                pass
-            storage.used = True
+        for _ in storage:
+            pass
+        storage.used = True
 
-        # Check if username is blocked
-        block_key = f'admin_block_until_{username}'
-        blocked_until_str = request.session.get(block_key)
-        if blocked_until_str:
-            try:
-                blocked_until = timezone.datetime.fromisoformat(blocked_until_str)
-                if timezone.now() < blocked_until:
-                    messages.error(request, f"Blocked from admin login until {blocked_until.strftime('%Y-%m-%d %H:%M:%S UTC')}, akhi!")
-                    return render(request, 'core/admin_login.html')
-            except (ValueError, TypeError):
-                request.session[block_key] = None
+        logger.info(f"Username entered: {username}, Expected: {settings.ADMIN_USERNAME}")
+        logger.info(f"ADMIN_PASSWORD_HASH: {settings.ADMIN_PASSWORD_HASH}")
 
-        # Admin check (Bahtiyorjon)
-        if username == settings.ADMIN_USERNAME and check_password(password, settings.ADMIN_PASSWORD_HASH):
-            request.session.flush()  # Clear all session data
-            request.session['is_admin'] = True
-            request.session['_fresh_login'] = True  # Mark as fresh login
-            request.session[f'admin_attempts_{username}'] = 0
-            if block_key in request.session:
-                del request.session[block_key]
-            messages.success(request, 'Welcome, boss!')
-            return redirect('admin_dashboard')
-        else:
-            # Handle failed attempts and blocking
-            failed_attempts = request.session.get(f'admin_attempts_{username}', 0) + 1
-            request.session[f'admin_attempts_{username}'] = failed_attempts
-            if failed_attempts >= 3:
-                block_until = timezone.now() + timedelta(minutes=10)
-                request.session[block_key] = block_until.isoformat()
-                request.session[f'admin_attempts_{username}'] = 0
-                messages.error(request, 'Blocked for 10 mins from admin login!')
-                ip = request.META.get('REMOTE_ADDR', 'Unknown')
-                print(f"User '{username}' blocked from admin login. IP: {ip}")
+        # Use the new key you just made
+        hardcoded_hash = "pbkdf2_sha256$870000$kW2kMFcWTb7Gqc6G1ZFiM5$HGAXzrTsIzCVgdwRQYPuIiyhrYFe7/QdgUeWhJYXEmk=" 
+        try:
+            if username == settings.ADMIN_USERNAME and check_password(password, hardcoded_hash):
+                request.session.flush()
+                request.session['is_admin'] = True
+                request.session['_fresh_login'] = True
+                messages.success(request, "Welcome, boss! You’re in! 😎")
+                return redirect('admin_dashboard')
             else:
-                messages.error(request, f'Wrong creds! {3 - failed_attempts} attempts left.')
+                messages.error(request, "Wrong creds, dude! Try again!")
+                return render(request, 'core/admin_login.html')
+        except ValueError as e:
+            logger.error(f"Hash error: {str(e)}, Hash value: {hardcoded_hash}")
+            messages.error(request, f"Config error: {str(e)}. Fix your setup, boy!")
             return render(request, 'core/admin_login.html')
 
-    # Fallback (shouldn’t hit this, but just in case)
     return render(request, 'core/admin_login.html')
 
 def admin_dashboard(request):
@@ -1553,16 +1535,13 @@ def admin_dashboard(request):
         messages.error(request, "You’re not the boss! Log in first! 😬")
         return redirect('admin_login')
 
-    # Clear fresh login flag after first dashboard access
     if request.session.get('_fresh_login', False):
         del request.session['_fresh_login']
 
-    # Clear any existing messages for a clean start
     storage = messages.get_messages(request)
-    if storage:
-        for _ in storage:
-            pass
-        storage.used = True
+    for _ in storage:
+        pass
+    storage.used = True
 
     admin_options = [
         {'name': 'Manage Users', 'url': 'manage_users', 'emoji': '👤'},

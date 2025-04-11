@@ -3,13 +3,15 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "bahtiyor05/paymebot:latest",
+      "Name": "paymebot:latest",
       "Update": "true"
     },
     "Ports": [
       {
         "ContainerPort": 8000,
-        "HostPort": 80
+        "HostPort": 8000
       }
-    ]
+    ],
+    "Logging": "/var/log/gunicorn"
   }
+

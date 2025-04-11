@@ -1,30 +1,29 @@
-
-
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - DATABASE_URL=postgres://postgres:Ben123!!@db:5432/paymebot_db
-    depends_on:
-      - db
-    volumes:
-      - .:/app
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
-
   db:
     image: postgres:15
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Ben123!!
-      - POSTGRES_DB=paymebot_db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: paymebot_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ben123!!
+
+  app:
+    build: .
+    env_file:
+      - .env
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput --username $ADMIN_USERNAME --email $EMAIL_HOST_USER || true &&
+             gunicorn --bind 0.0.0.0:8000 paymebot.wsgi:application"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
 
 volumes:
   pgdata:
