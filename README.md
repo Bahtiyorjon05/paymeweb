@@ -2,26 +2,33 @@
 
 A robust, Azure-hosted Django application for secure financial transactions with comprehensive payment management features.
 
-## Features
-- Secure user authentication with 2FA
-- Card management with Luhn validation
-- User-to-user payments
-- Real-time currency conversion
-- Comprehensive transaction reporting
-- Admin dashboard
+## 🚀 Features
 
-## Technologies
-- Django, Python
-- Microsoft Azure (App Service, SQL Database)
-- Docker containerization
-- JWT Authentication
+- **Secure Authentication**: Two-factor authentication with session management
+- **Card Management**: Add/remove cards with Luhn algorithm validation
+- **Money Transfers**: Send money to contacts or directly to card numbers
+- **Currency Conversion**: Real-time exchange rates across multiple currencies
+- **Transaction History**: Comprehensive reporting with data visualization
+- **Admin Dashboard**: User management, transaction monitoring, and system reporting
 
-## Azure Deployment Best Practices
-- Sensitive credentials stored in Azure Key Vault
-- Azure App Service for containerized hosting
-- Azure SQL Database for secure data storage
-- Azure Monitor for application insights
-- Integrated CI/CD pipeline
+## 🛠️ Technologies
 
-## Setup and Installation
-[Instructions for local development and deployment]
+- **Backend**: Python, Django, Django REST Framework
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Database**: Azure SQL Database
+- **Cloud**: Microsoft Azure (App Service, Container Registry)
+- **DevOps**: Docker containerization
+- **Security**: JWT Authentication, CSRF protection
+
+## ⚙️ Setup and Installation
+
+### Prerequisites
+- Python 3.8+
+- Docker
+- Azure CLI
+
+### Local Development
+1. Clone the repository
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/PaymeBot.git
+   cd PaymeBot
