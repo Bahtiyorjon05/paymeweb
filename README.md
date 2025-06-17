@@ -30,5 +30,5 @@ A robust, Azure-hosted Django application for secure financial transactions with
 ### Local Development
 1. Clone the repository
    ```bash
-   git clone https://github.com/YOUR-USERNAME/PaymeBot.git
+   git clone https://github.com/Bahtiyorjon05/PaymeBot.git
    cd PaymeBot
