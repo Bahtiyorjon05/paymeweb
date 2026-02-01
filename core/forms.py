@@ -48,7 +48,15 @@ class SignupForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
+        if password:
+            password = password.strip()
+            cleaned_data['password'] = password
+            
         confirm_password = cleaned_data.get('confirm_password')
+        if confirm_password:
+            confirm_password = confirm_password.strip()
+            cleaned_data['confirm_password'] = confirm_password
+            
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords do not match!")
         return cleaned_data
@@ -61,6 +69,10 @@ class LoginForm(forms.Form):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         password = cleaned_data.get('password')
+        
+        if username: username = username.strip()
+        if password: password = password.strip()
+        
         user = authenticate(username=username, password=password)
         if user is None:
             raise forms.ValidationError("Invalid username or password!")

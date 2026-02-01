@@ -28,6 +28,7 @@ import subprocess
 import os
 from django.http import StreamingHttpResponse
 
+import socket
 
 def home(request):
     return render(request, 'core/home.html')
@@ -1306,17 +1307,25 @@ def forgot_password(request):
             request.session['reset_email'] = email
             request.session['reset_code'] = reset_code
             try:
-                # Use a custom connection with timeout to prevent worker crash
-                from django.core.mail import get_connection, EmailMessage
-                connection = get_connection(timeout=10)
-                email_msg = EmailMessage(
-                    'Your Payme Password Reset Code',
-                    f"Hey,\n\nForgot your password? Here’s your reset code: {reset_code}\n\nUse it quick, buddy!",
-                    settings.EMAIL_HOST_USER or 'noreply@paymebot.com',
-                    [email],
-                    connection=connection
-                )
-                email_msg.send(fail_silently=False)
+                # Force IPv4 for Gmail in Docker
+                orig_getaddrinfo = socket.getaddrinfo
+                def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+                    return orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+                
+                socket.getaddrinfo = getaddrinfo_ipv4
+                try:
+                    from django.core.mail import get_connection, EmailMessage
+                    connection = get_connection(timeout=10)
+                    email_msg = EmailMessage(
+                        'Your Payme Password Reset Code',
+                        f"Hey,\n\nForgot your password? Here’s your reset code: {reset_code}\n\nUse it quick, buddy!",
+                        settings.EMAIL_HOST_USER or 'noreply@paymebot.com',
+                        [email],
+                        connection=connection
+                    )
+                    email_msg.send(fail_silently=False)
+                finally:
+                    socket.getaddrinfo = orig_getaddrinfo
                 
                 print(f"Sent reset code {reset_code} to {email}")
                 messages.success(request, "Check your email for the code! 📩")
