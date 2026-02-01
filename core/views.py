@@ -78,21 +78,6 @@ def login_view(request):
                 return render(request, 'core/login.html', {'form': form})
         else:
             print(f"DEBUG: Form invalid. Errors: {form.errors}")
-            
-            # --- DEEP DEBUGGING START ---
-            dbg_username = form.cleaned_data.get('username')
-            dbg_password = form.cleaned_data.get('password')
-            if dbg_username and dbg_password:
-                try:
-                    user_debug = User.objects.get(username=dbg_username)
-                    print(f"DEBUG: Deep check for user '{dbg_username}'")
-                    print(f"DEBUG: is_active: {user_debug.is_active}")
-                    print(f"DEBUG: check_password() result: {user_debug.check_password(dbg_password)}")
-                    print(f"DEBUG: DB Password hash: {user_debug.password}")
-                except User.DoesNotExist:
-                    print(f"DEBUG: User '{dbg_username}' not found in database.")
-            # --- DEEP DEBUGGING END ---
-
             username = request.POST.get('username')
             try:
                 user = User.objects.get(username=username)
