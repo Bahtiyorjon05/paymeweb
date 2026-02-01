@@ -20,17 +20,18 @@ RUN apt-get update \
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy project
+# Copy project (including the newly created paymebot folder)
 COPY . /app/
 
 # Create logs directory
 RUN mkdir -p /var/log/paymebot /var/www/paymebot/static
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Expose port (Railway will set PORT environment variable)
 EXPOSE $PORT
 
+# Create start script that handles migrations and static files at runtime
+RUN echo '#!/bin/bash\npython manage.py migrate --noinput\npython manage.py collectstatic --noinput --clear\nexec gunicorn paymebot.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --timeout 120' > /app/start_server.sh
+RUN chmod +x /app/start_server.sh
+
 # Run the application
-CMD ["gunicorn", "paymebot.wsgi:application", "--bind", "0.0.0.0:$PORT", "--workers", "1"]
+CMD ["/app/start_server.sh"]

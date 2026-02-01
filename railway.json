@@ -4,6 +4,7 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
+    "startCommand": "sh start.sh",
     "restartPolicy": {
       "maxRetries": 3
     }
