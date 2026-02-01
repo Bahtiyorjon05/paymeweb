@@ -51,15 +51,19 @@ def signup(request):
 
 def login_view(request):
     if request.method == 'POST':
+        print(f"DEBUG: Login attempt for username: {request.POST.get('username')}")
         form = LoginForm(request.POST)
         if form.is_valid():
+            print("DEBUG: Form is valid")
             username = form.cleaned_data['username']
             try:
                 user = User.objects.get(username=username)
+                print(f"DEBUG: User {username} found in DB")
                 if user.block_until and user.block_until > timezone.now():
                     messages.error(request, f"You’re blocked until {user.block_until.strftime('%Y-%m-%d %H:%M:%S UTC')}! Please contact admin for help!")
                     return render(request, 'core/login.html', {'form': form})
                 login(request, user)
+                print("DEBUG: Login successful")
                 user.last_activity = timezone.now()
                 user.save()
                 if user.two_factor_code:
@@ -68,9 +72,11 @@ def login_view(request):
                 messages.success(request, 'Login successful! Welcome back!')
                 return redirect('dashboard')
             except User.DoesNotExist:
+                print(f"DEBUG: User {username} DOES NOT EXIST (caught in try-except)")
                 messages.error(request, "Username doesn’t exist!")
                 return render(request, 'core/login.html', {'form': form})
         else:
+            print(f"DEBUG: Form invalid. Errors: {form.errors}")
             username = request.POST.get('username')
             try:
                 user = User.objects.get(username=username)
