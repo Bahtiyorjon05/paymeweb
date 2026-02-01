@@ -1,9 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
+# Logs
+logs/
+*.log
 
+# Local settings
+local_settings.py
 .env
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+.env.local
+.env.dev
+
+# Database
+*.sqlite3
+*.sqlite3-journal
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+htmlcov/
+
+# Deployment
+*.zip
+
+# Environment specific
+.env.example
+.env.production
+.env.staging
+
+# Django
+*.pot
+*.pyo
+MANIFEST
+media/
+staticfiles/
+
+# Secrets
+secret.key
+secrets/

@@ -1,27 +1,36 @@
-# Use the official Python image
+# Use official Python runtime as a parent image
 FROM python:3.11-slim
 
-# Set working directory
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
 WORKDIR /app
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        postgresql-client \
+        build-essential \
+        libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the rest of the app
-COPY . .
+# Copy project
+COPY . /app/
 
-# Collect static files during build
+# Create logs directory
+RUN mkdir -p /var/log/paymebot /var/www/paymebot/static
+
+# Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Expose port
-EXPOSE 8000
+# Expose port (Railway will set PORT environment variable)
+EXPOSE $PORT
 
-# Run migrations and create/update superuser at runtime
-CMD ["sh", "-c", "python manage.py migrate && echo \"from core.models import User; user = User.objects.filter(username='admin1').first(); (user.set_password('$DJANGO_SUPERUSER_PASSWORD') if user else User.objects.create_superuser(username='admin1', email='admin@example.com', password='$DJANGO_SUPERUSER_PASSWORD')); user.is_staff = True if user else User.objects.create_superuser(username='admin1', email='admin@example.com', password='$DJANGO_SUPERUSER_PASSWORD', is_staff=True, is_superuser=True); user.is_superuser = True if user else None; user.save() if user else None\" | python manage.py shell && gunicorn --bind 0.0.0.0:8000 paymebot.wsgi:application"]
+# Run the application
+CMD ["gunicorn", "paymebot.wsgi:application", "--bind", "0.0.0.0:$PORT", "--workers", "1"]

@@ -27,9 +27,10 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Django’s built-in admin
+    path('admin/', admin.site.urls),  # Django's built-in admin
     path('', include('core.urls')),   # Everything user-facing and admin-related
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

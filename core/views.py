@@ -1511,20 +1511,25 @@ def admin_login(request):
         logger.info(f"Username entered: {username}, Expected: {settings.ADMIN_USERNAME}")
         logger.info(f"ADMIN_PASSWORD_HASH: {settings.ADMIN_PASSWORD_HASH}")
 
-        # Use the new key you just made
-        hardcoded_hash = "pbkdf2_sha256$870000$kW2kMFcWTb7Gqc6G1ZFiM5$HGAXzrTsIzCVgdwRQYPuIiyhrYFe7/QdgUeWhJYXEmk=" 
+        # Use the hash from settings
+        admin_password_hash = settings.ADMIN_PASSWORD_HASH
+        if not admin_password_hash:
+            logger.error("ADMIN_PASSWORD_HASH is not set in settings")
+            messages.error(request, "Configuration error: Admin password hash not set")
+            return render(request, 'core/admin_login.html')
+
         try:
-            if username == settings.ADMIN_USERNAME and check_password(password, hardcoded_hash):
+            if username == settings.ADMIN_USERNAME and check_password(password, admin_password_hash):
                 request.session.flush()
                 request.session['is_admin'] = True
                 request.session['_fresh_login'] = True
-                messages.success(request, "Welcome, boss! You’re in! 😎")
+                messages.success(request, "Welcome, boss! You're in! 😎")
                 return redirect('admin_dashboard')
             else:
                 messages.error(request, "Wrong creds, dude! Try again!")
                 return render(request, 'core/admin_login.html')
         except ValueError as e:
-            logger.error(f"Hash error: {str(e)}, Hash value: {hardcoded_hash}")
+            logger.error(f"Hash error: {str(e)}, Hash value: {admin_password_hash}")
             messages.error(request, f"Config error: {str(e)}. Fix your setup, boy!")
             return render(request, 'core/admin_login.html')
 
