@@ -1560,7 +1560,6 @@ def admin_dashboard(request):
     
     return render(request, 'core/admin_dashboard.html', {'admin_options': admin_options})
 
-@csrf_exempt  # Remove in production for security
 def manage_users(request):
     if not request.session.get('is_admin', False):
         messages.error(request, "You’re not the boss! Log in first! 😬")
@@ -2137,7 +2136,6 @@ def view_users_contacts_api(request):
     return JsonResponse({'users': user_list})
 
 
-@csrf_exempt  # Remove in production
 def manage_cards(request):
     if not request.session.get('is_admin', False):
         messages.error(request, "You’re not the boss! Log in first! 😬")
@@ -2556,40 +2554,6 @@ def admin_remove_card(request):
     })
 
 
-@csrf_exempt
-def admin_manage_transactions(request):
-    if not request.session.get('is_admin', False):
-        messages.error(request, "You’re not the boss! Log in first! 😬")
-        return redirect('admin_login')
-
-    if request.method == 'GET':
-        transaction_options = [
-            {'name': 'View Transactions', 'url': '#', 'emoji': '👀', 'action': 'view_transactions'},
-            {'name': 'Sort Transactions', 'url': '#', 'emoji': '🔄', 'action': 'sort_transactions'},
-            {'name': 'Download Transactions', 'url': '#', 'emoji': '📥', 'action': 'download_all_transactions'},
-            {'name': 'Search Transaction', 'url': '#', 'emoji': '🔍', 'action': 'search_transaction'},
-            {'name': 'Back to Dashboard', 'url': 'admin_dashboard', 'emoji': '🔙', 'action': 'back_dashboard'},
-        ]
-        return render(request, 'core/admin_manage_transactions.html', {
-            'transaction_options': transaction_options
-        })
-
-    elif request.method == 'POST':
-        action = request.POST.get('action')
-        if action == 'view_transactions':
-            return JsonResponse({'redirect': reverse('admin_view_transactions')})
-        elif action == 'sort_transactions':
-            return JsonResponse({'redirect': reverse('admin_sort_transactions')})
-        elif action == 'download_all_transactions':
-            return JsonResponse({'redirect': '/payme-admin/download/all-transactions/'})
-        elif action == 'search_transaction':
-            return JsonResponse({'redirect': '/payme-admin/search/transaction/'})
-        elif action == 'back_dashboard':
-            return JsonResponse({'redirect': reverse('admin_dashboard')})
-        else:
-            return JsonResponse({'error': 'Invalid action, dude!'}, status=400)
-
-
 def admin_view_transactions(request):
     if not request.session.get('is_admin', False):
         messages.error(request, "You’re not the boss! Log in first! 😬")
@@ -2849,7 +2813,6 @@ def download_all_sorted_transactions_pdf(request):
 
     return response
 
-@csrf_exempt
 def admin_manage_transactions(request):
     if not request.session.get('is_admin', False):
         messages.error(request, "You’re not the boss! Log in first! 😬")
