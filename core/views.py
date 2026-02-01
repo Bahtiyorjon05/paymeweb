@@ -1300,13 +1300,18 @@ def forgot_password(request):
             request.session['reset_email'] = email
             request.session['reset_code'] = reset_code
             try:
-                send_mail(
+                # Use a custom connection with timeout to prevent worker crash
+                from django.core.mail import get_connection, EmailMessage
+                connection = get_connection(timeout=10)
+                email_msg = EmailMessage(
                     'Your Payme Password Reset Code',
                     f"Hey,\n\nForgot your password? Here’s your reset code: {reset_code}\n\nUse it quick, buddy!",
-                    'your_email@gmail.com',
+                    settings.EMAIL_HOST_USER or 'noreply@paymebot.com',
                     [email],
-                    fail_silently=False,
+                    connection=connection
                 )
+                email_msg.send(fail_silently=False)
+                
                 print(f"Sent reset code {reset_code} to {email}")
                 messages.success(request, "Check your email for the code! 📩")
                 return render(request, 'core/forgot_password.html', {'step': 'verify'})
