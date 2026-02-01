@@ -51,6 +51,30 @@ class PerformanceMonitoringMiddleware(MiddlewareMixin):
             if duration > 1.0:  # Log requests taking more than 1 second
                 import logging
                 logger = logging.getLogger('performance')
-                logger.warning(f'Slow request: {request.path} took {duration:.2f}s')
+
         
         return response
+
+
+class AdminAuthMiddleware(MiddlewareMixin):
+    """
+    Middleware to ensure admin authentication for admin routes
+    """
+    def process_request(self, request):
+        # Check if the request is for the admin area
+        if request.path.startswith('/payme-admin/'):
+            # Allow access to login and logout views without authentication
+            if request.path in ['/payme-admin/login/', '/payme-admin/logout/']:
+                return None
+            
+            # Check if user is authenticated as admin
+            if not request.session.get('is_admin'):
+                from django.contrib import messages
+                from django.shortcuts import redirect
+                
+                # Add error message and redirect to login
+                # We use lazy evaluation for messages to avoid circular imports if any
+                messages.error(request, "You’re not the boss! Log in first! 😬")
+                return redirect('admin_login')
+        
+        return None
